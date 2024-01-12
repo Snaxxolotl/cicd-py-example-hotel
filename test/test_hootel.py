@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.relative_locator import locate_with
 import allure
 import pytest
 
@@ -53,3 +54,78 @@ class TestHootel(object):
         hotel_list = self.browser.find_elements(By.XPATH, '//h4[@style="cursor: pointer"]')
         assert len(hotel_list) != 0
         assert len(hotel_list) == 10
+
+    def test_hotel_checkboxes(self):
+        hotel_list_btn = self.browser.find_element(By.XPATH, '//button[@class="btn btn-outline-primary btn-block"]')
+        hotel_list_btn.click()
+        time.sleep(1)
+
+        checkboxes = self.browser.find_elements(By.XPATH, '//input[@type="checkbox"]')
+        for index, checkbox in enumerate(checkboxes):
+            checkboxes[index].click()
+            assert checkboxes[index].is_selected()
+
+        clear_checkboxes = self.browser.find_element(By.XPATH, '//span[@class="badge badge-secondary mr-2"]')
+        clear_checkboxes.click()
+        for index, _ in enumerate(checkboxes):
+            assert not checkboxes[index].is_selected()
+
+    def test_find_hotel(self):
+        hotel_list_btn = self.browser.find_element(By.XPATH, '//button[@class="btn btn-outline-primary btn-block"]')
+        hotel_list_btn.click()
+        hotel_name = WebDriverWait(self.browser, 5).until(EC.visibility_of_element_located((By.XPATH, '//h4[text()="Mágikus szálló - szálloda"]')))
+        assert hotel_name.text == 'Mágikus szálló - szálloda'
+        hotel_btn = self.browser.find_element(locate_with(By.TAG_NAME, 'button').below(hotel_name))
+        hotel_btn.click()
+        desc = WebDriverWait(self.browser, 5).until(EC.visibility_of_element_located((By.XPATH, "//p[text()[contains(.,'AAAAAAAAAAAAAAAAAAAAAa')]]")))
+        assert 'A' in desc.text
+
+    def test_foglalas_tab(self):
+        login_btn = self.browser.find_element(By.LINK_TEXT, 'Bejelentkezés')
+        login_btn.click()
+
+        time.sleep(1)
+
+        email_foglalassal = 'kadav78379@glalen.com'
+        pw_foglalassal = '!-=#&'
+
+        email_input = self.browser.find_element(By.ID, 'email')
+        email_input.send_keys(email_foglalassal)
+
+        pw_input = self.browser.find_element(By.ID, 'password')
+        pw_input.send_keys(pw_foglalassal)
+
+        submit_btn = self.browser.find_element(By.NAME, 'submit')
+        submit_btn.click()
+        exit_btn = WebDriverWait(self.browser, 5).until(EC.visibility_of_element_located((By.ID, 'logout-link')))
+        assert exit_btn.is_displayed()
+        bookings_btn = self.browser.find_element(By.ID, 'user-bookings')
+        bookings_btn.click()
+        foglalasok = WebDriverWait(self.browser, 5).until(EC.visibility_of_element_located((By.ID, 'actual-tab')))
+        assert foglalasok.text == 'Aktuális és későbbi foglalásaim'
+
+    def test_aktualis_foglalsok(self):
+        login_btn = self.browser.find_element(By.LINK_TEXT, 'Bejelentkezés')
+        login_btn.click()
+
+        time.sleep(1)
+
+        email_foglalassal = 'kadav78379@glalen.com'
+        pw_foglalassal = '!-=#&'
+
+        email_input = self.browser.find_element(By.ID, 'email')
+        email_input.send_keys(email_foglalassal)
+
+        pw_input = self.browser.find_element(By.ID, 'password')
+        pw_input.send_keys(pw_foglalassal)
+
+        submit_btn = self.browser.find_element(By.NAME, 'submit')
+        submit_btn.click()
+        exit_btn = WebDriverWait(self.browser, 5).until(EC.visibility_of_element_located((By.ID, 'logout-link')))
+        assert exit_btn.is_displayed()
+        bookings_btn = self.browser.find_element(By.ID, 'user-bookings')
+        bookings_btn.click()
+        foglalasok = WebDriverWait(self.browser, 5).until(EC.visibility_of_element_located((By.ID, 'actual-tab')))
+        assert foglalasok.text == 'Aktuális és későbbi foglalásaim'
+        delete_btn = WebDriverWait(self.browser, 5).until(EC.visibility_of_element_located((By.XPATH, '//button[@class="btn btn-primary mr-4 "]')))
+        assert delete_btn.is_displayed()
