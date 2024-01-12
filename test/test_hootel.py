@@ -83,7 +83,7 @@ class TestHootel(object):
     def test_foglalas_tab(self):
         menu_toggle = WebDriverWait(self.browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//button[@class="navbar-toggler collapsed"]')))
         menu_toggle.click()
-        login_btn = self.browser.find_element(By.LINK_TEXT, 'Bejelentkezés')
+        login_btn = WebDriverWait(self.browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//a[@class="nav-link"]')))
         login_btn.click()
 
         time.sleep(1)
@@ -109,7 +109,7 @@ class TestHootel(object):
     def test_aktualis_foglalsok(self):
         menu_toggle = WebDriverWait(self.browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//button[@class="navbar-toggler collapsed"]')))
         menu_toggle.click()
-        login_btn = self.browser.find_element(By.LINK_TEXT, 'Bejelentkezés')
+        login_btn = WebDriverWait(self.browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//a[@class="nav-link"]')))
         login_btn.click()
 
         time.sleep(1)
@@ -137,7 +137,7 @@ class TestHootel(object):
     def test_kesobbi_foglalsok(self):
         menu_toggle = WebDriverWait(self.browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//button[@class="navbar-toggler collapsed"]')))
         menu_toggle.click()
-        login_btn = self.browser.find_element(By.LINK_TEXT, 'Bejelentkezés')
+        login_btn = WebDriverWait(self.browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//a[@class="nav-link"]')))
         login_btn.click()
 
         time.sleep(1)
