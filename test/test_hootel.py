@@ -159,7 +159,7 @@ class TestHootel(object):
         bookings_btn.click()
         foglalasok = WebDriverWait(self.browser, 5).until(EC.visibility_of_element_located((By.ID, 'actual-tab')))
         assert foglalasok.text == 'Aktuális és későbbi foglalásaim'
-        korabbi_foglalasok_btn = self.browser.find_element(By.LINK_TEXT, 'Korábbi foglalásaim')
+        korabbi_foglalasok_btn = WebDriverWait(self.browser, 5).until(EC.element_to_be_clickable((By.LINK_TEXT, 'Korábbi foglalásaim')))
         korabbi_foglalasok_btn.click()
 
         time.sleep(1)
