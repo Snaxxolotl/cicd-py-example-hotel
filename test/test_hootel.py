@@ -129,3 +129,38 @@ class TestHootel(object):
         assert foglalasok.text == 'Aktuális és későbbi foglalásaim'
         delete_btn = WebDriverWait(self.browser, 5).until(EC.visibility_of_element_located((By.XPATH, '//button[@class="btn btn-primary mr-4 "]')))
         assert delete_btn.is_displayed()
+
+    def test_kesobbi_foglalsok(self):
+        login_btn = self.browser.find_element(By.LINK_TEXT, 'Bejelentkezés')
+        login_btn.click()
+
+        time.sleep(1)
+
+        email_foglalassal = 'kadav78379@glalen.com'
+        pw_foglalassal = '!-=#&'
+
+        email_input = self.browser.find_element(By.ID, 'email')
+        email_input.send_keys(email_foglalassal)
+
+        pw_input = self.browser.find_element(By.ID, 'password')
+        pw_input.send_keys(pw_foglalassal)
+
+        submit_btn = self.browser.find_element(By.NAME, 'submit')
+        submit_btn.click()
+        exit_btn = WebDriverWait(self.browser, 5).until(EC.visibility_of_element_located((By.ID, 'logout-link')))
+        assert exit_btn.is_displayed()
+        bookings_btn = self.browser.find_element(By.ID, 'user-bookings')
+        bookings_btn.click()
+        foglalasok = WebDriverWait(self.browser, 5).until(EC.visibility_of_element_located((By.ID, 'actual-tab')))
+        assert foglalasok.text == 'Aktuális és későbbi foglalásaim'
+        korabbi_foglalasok_btn = self.browser.find_element(By.LINK_TEXT, 'Korábbi foglalásaim')
+        korabbi_foglalasok_btn.click()
+
+        time.sleep(1)
+
+        delete_btn = WebDriverWait(self.browser, 5).until(EC.presence_of_all_elements_located((By.XPATH, '//button[@class="btn btn-primary mr-4 "]')))
+        for index, _ in enumerate(delete_btn):
+            if index+1 > len(delete_btn)-1:
+                break
+            else:
+                assert delete_btn[index+1].is_displayed()
