@@ -81,6 +81,8 @@ class TestHootel(object):
         assert 'A' in desc.text
 
     def test_foglalas_tab(self):
+        menu_toggle = WebDriverWait(self.browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//button[@class="navbar-toggler collapsed"]')))
+        menu_toggle.click()
         login_btn = self.browser.find_element(By.LINK_TEXT, 'Bejelentkezés')
         login_btn.click()
 
@@ -105,6 +107,8 @@ class TestHootel(object):
         assert foglalasok.text == 'Aktuális és későbbi foglalásaim'
 
     def test_aktualis_foglalsok(self):
+        menu_toggle = WebDriverWait(self.browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//button[@class="navbar-toggler collapsed"]')))
+        menu_toggle.click()
         login_btn = self.browser.find_element(By.LINK_TEXT, 'Bejelentkezés')
         login_btn.click()
 
@@ -131,6 +135,8 @@ class TestHootel(object):
         assert delete_btn.is_displayed()
 
     def test_kesobbi_foglalsok(self):
+        menu_toggle = WebDriverWait(self.browser, 5).until(EC.element_to_be_clickable((By.XPATH, '//button[@class="navbar-toggler collapsed"]')))
+        menu_toggle.click()
         login_btn = self.browser.find_element(By.LINK_TEXT, 'Bejelentkezés')
         login_btn.click()
 
